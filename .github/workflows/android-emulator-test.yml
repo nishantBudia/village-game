@@ -1,0 +1,74 @@
+name: Android Emulator Tests
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      api-level:
+        description: 'Android API level'
+        required: true
+        default: '31'
+        type: choice
+        options:
+          - '31'
+          - '30'
+          - '29'
+
+jobs:
+  android-emulator-test:
+    runs-on: macos-latest # macOS runner is better for Android emulation performance
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+    
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+    
+    - name: Install Workloads
+      run: dotnet workload install android
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build Android
+      run: dotnet build -c Debug -f net9.0-android
+    
+    - name: AVD cache
+      uses: actions/cache@v3
+      id: avd-cache
+      with:
+        path: |
+          ~/.android/avd/*
+          ~/.android/adb*
+        key: avd-${{ github.event.inputs.api-level || '31' }}
+    
+    - name: Create AVD and generate snapshot for caching
+      if: steps.avd-cache.outputs.cache-hit != 'true'
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ github.event.inputs.api-level || '31' }}
+        force-avd-creation: false
+        emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        script: echo "Generated AVD snapshot for caching."
+    
+    - name: Run tests on Android emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: ${{ github.event.inputs.api-level || '31' }}
+        force-avd-creation: false
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
+        script: adb install src/VillageGame.Game/bin/Debug/net9.0-android/*.apk && adb shell monkey -p com.companyname.villagegame.game -c android.intent.category.LAUNCHER 1 
