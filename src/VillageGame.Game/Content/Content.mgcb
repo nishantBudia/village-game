@@ -1,0 +1,25 @@
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------
+# Global Properties
+#---------------------------------------------------------------------------------
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#---------------------------------------------------------------------------------
+# Default Content Pipeline files
+#---------------------------------------------------------------------------------
+
+# Content files go here when added through the MGCB Editor
+
+#-------------------------------- References --------------------------------#
+
+/reference:/Users/nishant-personal/.nuget/packages/monogame.framework.content.pipeline/3.8.2.1105/lib/netstandard2.0/MonoGame.Framework.Content.Pipeline.dll
+
+#---------------------------------- Content ---------------------------------#
