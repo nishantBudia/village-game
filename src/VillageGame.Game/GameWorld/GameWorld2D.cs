@@ -10,7 +10,7 @@ namespace VillageGame.Game.GameWorld
     /// </summary>
     public class GameWorld2D
     {
-        private Texture2D _gridTexture;
+        private Texture2D? _gridTexture;
         private Rectangle _worldBounds;
         
         /// <summary>
@@ -25,10 +25,11 @@ namespace VillageGame.Game.GameWorld
         /// Loads content required by the game world
         /// </summary>
         /// <param name="content">The ContentManager to use for loading</param>
-        public void LoadContent(ContentManager content)
+        /// <param name="graphicsDevice">The graphics device used to create resources</param>
+        public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
             // Create a 1x1 white texture for the grid
-            _gridTexture = new Texture2D(content.GraphicsDevice, 1, 1);
+            _gridTexture = new Texture2D(graphicsDevice, 1, 1);
             _gridTexture.SetData(new[] { Color.White });
         }
         
