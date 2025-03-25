@@ -56,7 +56,7 @@ jobs:
       run: dotnet build -c Release -f net9.0-android /p:AndroidSdkDirectory=$ANDROID_SDK_ROOT
       
     - name: Upload Android Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: android-build
         path: src/VillageGame.Game/bin/Release/net9.0-android/
@@ -81,7 +81,7 @@ jobs:
       run: dotnet build -c Release -f net9.0-ios
       
     - name: Upload iOS Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         name: ios-build
         path: src/VillageGame.Game/bin/Release/net9.0-ios/
