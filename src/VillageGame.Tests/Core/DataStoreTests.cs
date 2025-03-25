@@ -47,8 +47,8 @@ namespace VillageGame.Tests.Core
             var loadedValue = await _dataStore.LoadDataAsync<string>(key);
             
             // Assert
-            Assert.IsTrue(saveResult, "Save operation should succeed");
-            Assert.AreEqual(value, loadedValue, "Loaded value should match saved value");
+            Assert.That(saveResult, Is.True, "Save operation should succeed");
+            Assert.That(loadedValue, Is.EqualTo(value), "Loaded value should match saved value");
         }
         
         [Test]
@@ -68,10 +68,10 @@ namespace VillageGame.Tests.Core
             var loadedValue = await _dataStore.LoadDataAsync<TestData>(key);
             
             // Assert
-            Assert.IsTrue(saveResult, "Save operation should succeed");
-            Assert.IsNotNull(loadedValue, "Loaded value should not be null");
-            Assert.AreEqual(value.Id, loadedValue.Id, "Loaded Id should match saved Id");
-            Assert.AreEqual(value.Name, loadedValue.Name, "Loaded Name should match saved Name");
+            Assert.That(saveResult, Is.True, "Save operation should succeed");
+            Assert.That(loadedValue, Is.Not.Null, "Loaded value should not be null");
+            Assert.That(loadedValue.Id, Is.EqualTo(value.Id), "Loaded Id should match saved Id");
+            Assert.That(loadedValue.Name, Is.EqualTo(value.Name), "Loaded Name should match saved Name");
         }
         
         [Test]
@@ -86,7 +86,7 @@ namespace VillageGame.Tests.Core
             var exists = await _dataStore.KeyExistsAsync(key);
             
             // Assert
-            Assert.IsTrue(exists, "Key should exist after saving data");
+            Assert.That(exists, Is.True, "Key should exist after saving data");
         }
         
         [Test]
@@ -99,7 +99,7 @@ namespace VillageGame.Tests.Core
             var exists = await _dataStore.KeyExistsAsync(key);
             
             // Assert
-            Assert.IsFalse(exists, "Key should not exist if not saved");
+            Assert.That(exists, Is.False, "Key should not exist if not saved");
         }
         
         [Test]
@@ -115,8 +115,8 @@ namespace VillageGame.Tests.Core
             var exists = await _dataStore.KeyExistsAsync(key);
             
             // Assert
-            Assert.IsTrue(deleteResult, "Delete operation should succeed");
-            Assert.IsFalse(exists, "Key should not exist after deletion");
+            Assert.That(deleteResult, Is.True, "Delete operation should succeed");
+            Assert.That(exists, Is.False, "Key should not exist after deletion");
         }
         
         private class TestData
