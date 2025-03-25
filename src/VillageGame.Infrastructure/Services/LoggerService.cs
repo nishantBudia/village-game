@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Serilog;
 using Serilog.Events;
-using Serilog.Core;
-using Serilog.Configuration;
 using VillageGame.Core.Interfaces;
 
 namespace VillageGame.Infrastructure.Services
@@ -42,11 +40,11 @@ namespace VillageGame.Infrastructure.Services
                     Directory.CreateDirectory(_logDirectory);
                 }
                 
-                // Configure Serilog - modified to avoid using RollingInterval enum
-                string logFilePath = Path.Combine(_logDirectory, $"{Path.GetFileNameWithoutExtension(_logFileName)}-{{Date}}.log");
+                // Configure Serilog
                 _logger = new LoggerConfiguration()
                     .MinimumLevel.Debug()
-                    .WriteTo.File(logFilePath, 
+                    .WriteTo.File(Path.Combine(_logDirectory, _logFileName), 
+                        rollingInterval: RollingInterval.Day,
                         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level}] {Message}{NewLine}{Exception}")
                     .CreateLogger();
                 
