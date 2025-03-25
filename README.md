@@ -43,7 +43,7 @@ VillageGame/
 
 ### Prerequisites
 
-- .NET 7.0 SDK or later
+- .NET 9.0 SDK or later
 - MonoGame Framework
 - Visual Studio 2022 or JetBrains Rider
 - Git

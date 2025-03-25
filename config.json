@@ -1,0 +1,10 @@
+{
+  "LogLevel": "Information",
+  "ScreenWidth": 1280,
+  "ScreenHeight": 720,
+  "MusicVolume": 0.7,
+  "SoundVolume": 1.0,
+  "AnalyticsEnabled": true,
+  "Environment": "Development",
+  "Version": "1.0.0.0"
+}
