@@ -43,7 +43,7 @@ namespace VillageGame.Game
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // Load game world content
-            _gameWorld.LoadContent(Content);
+            _gameWorld.LoadContent(Content, GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
