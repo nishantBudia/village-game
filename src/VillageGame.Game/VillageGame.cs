@@ -11,19 +11,36 @@ namespace VillageGame.Game
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameWorld2D _gameWorld;
-        private IGlobalContext _globalContext;
+        
+        // Individual service dependencies
+        private readonly ILoggerService _logger;
+        private readonly IDataStore _dataStore;
+        private readonly IAnalyticsService _analytics;
+        private readonly IMonetizationService _monetization;
+        private readonly IAppConfig _config;
 
-        public VillageGame(IGlobalContext globalContext)
+        public VillageGame(
+            ILoggerService logger,
+            IDataStore dataStore,
+            IAnalyticsService analytics,
+            IMonetizationService monetization,
+            IAppConfig config)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _globalContext = globalContext;
+            
+            // Store service references
+            _logger = logger;
+            _dataStore = dataStore;
+            _analytics = analytics;
+            _monetization = monetization;
+            _config = config;
         }
 
         protected override void Initialize()
         {
-            _globalContext.Logger.LogInformation("Game initialization started");
+            _logger.LogInformation("Game initialization started");
             
             // Configure graphics settings
             _graphics.PreferredBackBufferWidth = 1280;
@@ -35,7 +52,7 @@ namespace VillageGame.Game
             
             base.Initialize();
             
-            _globalContext.Logger.LogInformation("Game initialization completed");
+            _logger.LogInformation("Game initialization completed");
         }
 
         protected override void LoadContent()

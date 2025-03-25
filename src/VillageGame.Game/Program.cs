@@ -1,4 +1,4 @@
-using VillageGame.Core.Interfaces;
+using System;
 using VillageGame.Infrastructure.Services;
 
 namespace VillageGame.Game
@@ -8,21 +8,35 @@ namespace VillageGame.Game
         [STAThread]
         static void Main()
         {
-            // Create and configure global context
-            var globalContext = new GlobalContext();
-            globalContext.Initialize();
+            // Initialize services
+            var config = new AppConfig();
+            config.LoadFromFile("config.json");
 
-            // Log application start
-            globalContext.Logger.LogInformation("Village Game starting up");
+            var logger = new LoggerService();
+            logger.Initialize();
+            
+            var dataStore = new JsonDataStore();
+            dataStore.InitializeAsync().GetAwaiter().GetResult();
+            
+            var analytics = new LocalAnalyticsService(logger, dataStore);
+            analytics.InitializeAsync().GetAwaiter().GetResult();
+            
+            var monetization = new MockMonetizationService();
+            monetization.InitializeAsync().GetAwaiter().GetResult();
 
-            // Start game
-            using (var game = new VillageGame(globalContext))
+            logger.LogInformation("Village Game starting up");
+
+            try
             {
-                game.Run();
+                using (var game = new VillageGame(logger, dataStore, analytics, monetization, config))
+                {
+                    game.Run();
+                }
             }
-
-            // Log application exit
-            globalContext.Logger.LogInformation("Village Game shutting down");
+            finally
+            {
+                logger.LogInformation("Village Game shutting down");
+            }
         }
     }
 } 
